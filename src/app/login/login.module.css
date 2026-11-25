@@ -1,0 +1,110 @@
+.wrap {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px 16px;
+  background: var(--bg);
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  padding: 28px 22px;
+  border: 1px solid var(--line);
+  border-radius: 17px;
+  background: var(--panel);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 22px;
+}
+
+.mark {
+  width: 44px;
+  height: 44px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0b1220;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text);
+}
+
+.kicker {
+  margin: 2px 0 0;
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.heading {
+  margin: 0 0 18px;
+  font-size: 28px;
+  color: var(--text);
+}
+
+.field {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.label {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 14px;
+  font-size: 16px; /* 16px stops iOS zooming into the field */
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.input:focus-visible,
+.button:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.error {
+  margin: 0 0 14px;
+  padding: 10px 12px;
+  font-size: 14px;
+  color: var(--danger);
+  border: 1px solid var(--danger);
+  border-radius: 10px;
+}
+
+.button {
+  width: 100%;
+  min-height: var(--tap);
+  font-size: 16px;
+  font-weight: 600;
+  color: #0b1220;
+  background: var(--green);
+  border: 0;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}

@@ -2,21 +2,61 @@
 
 import { useEffect, useState } from "react";
 
-type BffStatus = "checking" | "ok" | "unreachable" | "not-configured";
+type SimpleStatus = "checking" | "ok" | "unreachable" | "not-configured";
+type ComponentStatus = "checking" | "up" | "down" | "unknown" | "not-configured";
+
+interface HealthComponent {
+  status?: string;
+  details?: Record<string, unknown>;
+}
+
+function Dot({ status }: { status: ComponentStatus | SimpleStatus }) {
+  const cls = status === "ok" || status === "up" ? "ok" : status === "unreachable" || status === "down" ? "err" : "";
+  return <span className={`dot ${cls}`} />;
+}
 
 export default function Home() {
-  const [status, setStatus] = useState<BffStatus>("checking");
+  const [bffStatus, setBffStatus] = useState<SimpleStatus>("checking");
+  const [dbStatus, setDbStatus] = useState<ComponentStatus>("checking");
+  const [dbDetail, setDbDetail] = useState<string>("");
+  const [redisStatus, setRedisStatus] = useState<ComponentStatus>("checking");
+  const [redisDetail, setRedisDetail] = useState<string>("");
+
   const bffUrl = process.env.NEXT_PUBLIC_WEALTH_BFF_URL;
+  const bssUrl = process.env.NEXT_PUBLIC_WEALTH_BSS_URL;
 
   useEffect(() => {
     if (!bffUrl) {
-      setStatus("not-configured");
+      setBffStatus("not-configured");
       return;
     }
     fetch(`${bffUrl}/actuator/health`)
-      .then((r) => setStatus(r.ok ? "ok" : "unreachable"))
-      .catch(() => setStatus("unreachable"));
+      .then((r) => setBffStatus(r.ok ? "ok" : "unreachable"))
+      .catch(() => setBffStatus("unreachable"));
   }, [bffUrl]);
+
+  useEffect(() => {
+    if (!bssUrl) {
+      setDbStatus("not-configured");
+      setRedisStatus("not-configured");
+      return;
+    }
+    fetch(`${bssUrl}/actuator/health`)
+      .then((r) => r.json())
+      .then((body: { components?: Record<string, HealthComponent> }) => {
+        const components = body.components ?? {};
+        const db = components.db;
+        const redis = components.redis;
+        setDbStatus(db ? (db.status === "UP" ? "up" : "down") : "unknown");
+        setDbDetail(db?.details ? JSON.stringify(db.details) : "");
+        setRedisStatus(redis ? (redis.status === "UP" ? "up" : "down") : "unknown");
+        setRedisDetail(redis?.details ? JSON.stringify(redis.details) : "");
+      })
+      .catch(() => {
+        setDbStatus("down");
+        setRedisStatus("down");
+      });
+  }, [bssUrl]);
 
   return (
     <main>
@@ -26,16 +66,31 @@ export default function Home() {
       <div className="card">
         <h2>wealth-bff connectivity</h2>
         <p className="status">
-          <span
-            className={`dot ${
-              status === "ok" ? "ok" : status === "unreachable" ? "err" : ""
-            }`}
-          />
-          {status === "checking" && "Checking..."}
-          {status === "not-configured" &&
-            "NEXT_PUBLIC_WEALTH_BFF_URL is not set"}
-          {status === "ok" && `Reachable at ${bffUrl}`}
-          {status === "unreachable" && `Could not reach ${bffUrl}`}
+          <Dot status={bffStatus} />
+          {bffStatus === "checking" && "Checking..."}
+          {bffStatus === "not-configured" && "NEXT_PUBLIC_WEALTH_BFF_URL is not set"}
+          {bffStatus === "ok" && `Reachable at ${bffUrl}`}
+          {bffStatus === "unreachable" && `Could not reach ${bffUrl}`}
+        </p>
+      </div>
+
+      <div className="card">
+        <h2>wealth-bss: database + cache</h2>
+        <p className="status">
+          <Dot status={dbStatus} />
+          {dbStatus === "checking" && "Checking database..."}
+          {dbStatus === "not-configured" && "NEXT_PUBLIC_WEALTH_BSS_URL is not set"}
+          {dbStatus === "up" && `Database up${dbDetail ? " — " + dbDetail : ""}`}
+          {dbStatus === "down" && "Database unreachable"}
+          {dbStatus === "unknown" && "Database status unknown (set MANAGEMENT_HEALTH_SHOW_DETAILS=always on wealth-bss)"}
+        </p>
+        <p className="status">
+          <Dot status={redisStatus} />
+          {redisStatus === "checking" && "Checking cache..."}
+          {redisStatus === "not-configured" && "NEXT_PUBLIC_WEALTH_BSS_URL is not set"}
+          {redisStatus === "up" && `Cache up${redisDetail ? " — " + redisDetail : ""}`}
+          {redisStatus === "down" && "Cache unreachable"}
+          {redisStatus === "unknown" && "Cache status unknown (set MANAGEMENT_HEALTH_SHOW_DETAILS=always on wealth-bss)"}
         </p>
       </div>
     </main>

@@ -1,0 +1,13 @@
+/* Design tokens carried over from the current Wealth app (style.css). */
+:root {
+  color-scheme: dark;
+  --bg: #0b1220;
+  --panel: #121d30;
+  --line: #26364e;
+  --text: #eef4ff;
+  --muted: #8fa2bd;
+  --green: #6ce0b0;
+  --blue: #83aaff;
+  --danger: #ff8f9a;
+  --tap: 48px;
+}

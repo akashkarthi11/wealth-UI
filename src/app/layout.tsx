@@ -1,9 +1,14 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
+import "./tokens.css";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "wealth-ui",
-  description: "Starter scaffold for the wealth UI",
+  title: "Karthi Portfolio",
+  description: "Your private wealth ledger",
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0b1220",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
