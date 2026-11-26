@@ -13,6 +13,10 @@ const CODE_MESSAGES: Record<string, string> = {
   "6002": "Password is too long.",
   [ERROR_CODE.tooManyAttempts]: "Too many attempts. Please wait 15 minutes and try again.",
   "6004": "Only the account owner can do this.",
+  "6005": "The admin role always sees every menu.",
+  "6006": "That role does not exist.",
+  "6007": "That menu does not exist.",
+  "6008": "Choose at least one menu.",
   "601": "No account was found for that email.",
 };
 

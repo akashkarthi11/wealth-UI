@@ -1,0 +1,56 @@
+.rows {
+  margin: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(90px, 30%) 1fr;
+  gap: 10px;
+  font-size: 13px;
+}
+
+.row dt {
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.row dd {
+  margin: 0;
+  min-width: 0;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.list {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.list li::marker {
+  color: var(--muted);
+}
+
+.num {
+  font-variant-numeric: tabular-nums;
+}
+
+.empty {
+  color: var(--muted);
+}
+
+.more {
+  color: var(--muted);
+  list-style: none;
+}
+
+@media (max-width: 520px) {
+  .row {
+    grid-template-columns: 1fr;
+    gap: 2px;
+  }
+}

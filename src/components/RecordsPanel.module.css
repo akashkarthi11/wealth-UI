@@ -1,0 +1,136 @@
+.count {
+  display: inline-block;
+  padding: 4px 10px;
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.search {
+  display: block;
+  margin-bottom: 14px;
+}
+
+.searchLabel {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.input {
+  width: 100%;
+  min-height: var(--tap);
+  padding: 0 14px;
+  font-size: 16px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.input:focus-visible {
+  outline: 0;
+  border-color: var(--green);
+  box-shadow: 0 0 0 3px rgba(108, 224, 176, 0.18);
+}
+
+.group {
+  margin-top: 16px;
+}
+
+.month {
+  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.month em {
+  font-style: normal;
+  margin-left: 6px;
+  color: var(--blue);
+}
+
+.card {
+  margin-bottom: 8px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.card[open] {
+  border-color: #35496a;
+}
+
+.summary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  padding: 8px 14px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.summary::-webkit-details-marker {
+  display: none;
+}
+
+.summary:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  font-size: 12px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.chevron {
+  font-style: normal;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--muted);
+  transition: transform 0.15s ease;
+}
+
+.card[open] .chevron {
+  transform: rotate(90deg);
+}
+
+.body {
+  padding: 4px 14px 14px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+  max-height: 520px;
+  overflow: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chevron {
+    transition: none;
+  }
+}

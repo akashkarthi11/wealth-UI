@@ -57,6 +57,7 @@ a database change, a dependency change, and removing anything. A deploy approved
 ### 8. Data safety
 - No test touches the production database or Redis. Use a Neon branch or a test container.
 - Schema changes go only through the existing migrations in `wealth/scripts/migrations` until the plan says otherwise. The BSS never runs DDL.
+- Every table has the GrowX audit columns (`crtd_dt`, `crtd_by`, `updt_dt`, `updt_by`; migration 0054). A new table's migration ends with `SELECT wealth_add_audit('table');`, and `scripts/db/check-audit-columns.sql` must return 0 rows. System and cron writes are user 1.
 
 ### 9. Build and run (this laptop)
 - Java: `JAVA_HOME` is Zulu 21. There is no `mvn` on PATH. Use the cached Maven under `~/.m2/wrapper/dists/apache-maven-3.9.11/*/bin/mvn`, offline (`-o`).
@@ -95,4 +96,4 @@ a database change, a dependency change, and removing anything. A deploy approved
 10. **Styling from tokens.** Colors, spacing and type come from `src/app/tokens.css`; no literal colors in a component. Mobile first, then check phone landscape and desktop.
 11. **Done means:** type-check passes, the screen works against the local BFF and BSS, the loading, empty and error states were each seen, and a search shows no repeated block.
 
-**Known duplication to clean up when touched:** `fetch()` is called directly in `app/login/page.tsx`, `app/overview/SignOutButton.tsx` and `app/page.tsx`. These move to `src/lib/api.ts`, with their URLs taken from `src/lib/constants.ts`. The status dot and status line in `app/page.tsx` move to `src/components/`.
+**Applied to login (2026-11-26):** `src/lib/constants.ts` and `src/lib/api.ts` exist, and login, logout, overview and the health route use them. Shared pieces: `src/components/Field`, `HealthCheck` and `icons`. The home address `/` redirects to `/login`, which carries the System status panel (Check health button).

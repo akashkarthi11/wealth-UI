@@ -28,3 +28,39 @@ export interface HealthReport {
   db: string | null;
   redis: string | null;
 }
+
+// Admin module (BFF admin/…, DTOs in wealth-common).
+export interface MenuItem {
+  key: string;
+  label: string;
+  group: string;
+}
+
+export interface RoleInfo {
+  role: string;
+  label: string;
+  users: number;
+  locked: boolean;
+  menus: string[];
+}
+
+export interface RolesOverview {
+  menus: MenuItem[];
+  roles: RoleInfo[];
+}
+
+export interface RoleMenusSaved {
+  role: string;
+  menus: string[];
+}
+
+export interface RecordItem {
+  id: string;
+  sourceKey: string;
+  sourceName: string;
+  // YYYY-MM-DD
+  snapshotDate: string;
+  // JSON text
+  payload: string;
+  createdAt: string | null;
+}

@@ -6,7 +6,7 @@ import { useState } from "react";
 import { apiPost } from "@/lib/api";
 import { ENDPOINTS, ROUTES } from "@/lib/constants";
 
-import styles from "./overview.module.css";
+import styles from "./SignOutButton.module.css";
 
 export default function SignOutButton() {
   const router = useRouter();
@@ -20,7 +20,7 @@ export default function SignOutButton() {
   }
 
   return (
-    <button className={styles.signOut} type="button" onClick={signOut} disabled={busy}>
+    <button className={styles.button} type="button" onClick={signOut} disabled={busy}>
       {busy ? "Signing out…" : "Sign out"}
     </button>
   );
