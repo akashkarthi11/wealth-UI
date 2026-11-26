@@ -1,6 +1,7 @@
 import { redirect } from "next/navigation";
 
 import { bffPost } from "@/lib/bff";
+import { BFF_PATHS, ROUTES } from "@/lib/constants";
 import { getToken } from "@/lib/session";
 import type { User } from "@/lib/types";
 
@@ -13,12 +14,12 @@ export const dynamic = "force-dynamic";
 export default async function OverviewPage() {
   const token = await getToken();
   if (!token) {
-    redirect("/login");
+    redirect(ROUTES.login);
   }
-  const result = await bffPost<User>("customers/users/me", undefined, { token });
+  const result = await bffPost<User>(BFF_PATHS.me, undefined, { token });
   const user = result.body?.status === 1 ? result.body.data : null;
   if (!user) {
-    redirect("/login");
+    redirect(ROUTES.login);
   }
 
   return (

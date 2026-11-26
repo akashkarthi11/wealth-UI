@@ -1,25 +1,40 @@
 import { NextResponse } from "next/server";
 
+import { bffGet } from "@/lib/bff";
+import { BFF_ACTUATOR_HEALTH, BFF_PATHS, HEALTH_TIMEOUT_MS } from "@/lib/constants";
+import type { HealthReport } from "@/lib/types";
+
 export const dynamic = "force-dynamic";
 
-// Server-side check: the base URL answers 401, so probe the actuator health path.
+// The BFF health API reports bff, bss, db and redis. An older BFF without it falls back to the actuator (BFF only).
+interface BffHealthBody {
+  bff?: string;
+  bss?: string;
+  db?: string;
+  redis?: string;
+  status?: string;
+}
+
+const report = (fields: Partial<HealthReport>): HealthReport => ({
+  configured: true,
+  reachable: false,
+  status: null,
+  bss: null,
+  db: null,
+  redis: null,
+  ...fields,
+});
+
 export async function GET() {
-  const base = (process.env.WEALTH_BFF_URL ?? process.env.NEXT_PUBLIC_WEALTH_BFF_URL ?? "").replace(/\/+$/, "");
-  if (!base) {
-    return NextResponse.json({ configured: false, reachable: false, status: null, url: null });
+  const full = await bffGet<BffHealthBody>(BFF_PATHS.health, { timeoutMs: HEALTH_TIMEOUT_MS });
+  if (full.httpStatus === 503) {
+    return NextResponse.json(report({ configured: false }));
   }
-  const url = `${base}/actuator/health`;
-  try {
-    const response = await fetch(url, { cache: "no-store", signal: AbortSignal.timeout(8000) });
-    const body = (await response.json().catch(() => null)) as { status?: string } | null;
-    return NextResponse.json({
-      configured: true,
-      reachable: response.ok,
-      status: body?.status ?? null,
-      httpStatus: response.status,
-      url,
-    });
-  } catch {
-    return NextResponse.json({ configured: true, reachable: false, status: null, httpStatus: null, url });
+  const body = full.body;
+  if (full.httpStatus === 200 && body?.bff) {
+    return NextResponse.json(report({ reachable: true, status: body.bff, bss: body.bss ?? null, db: body.db ?? null, redis: body.redis ?? null }));
   }
+  const actuator = await bffGet<BffHealthBody>(BFF_ACTUATOR_HEALTH, { raw: true, timeoutMs: HEALTH_TIMEOUT_MS });
+  const actuatorBody = actuator.body;
+  return NextResponse.json(report({ reachable: actuator.httpStatus === 200, status: actuatorBody?.status ?? null }));
 }

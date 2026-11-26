@@ -3,12 +3,19 @@
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
+import Field from "@/components/Field";
+import HealthCheck from "@/components/HealthCheck";
+import { AlertIcon, EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "@/components/icons";
+import { apiPost } from "@/lib/api";
+import { ENDPOINTS, ROUTES } from "@/lib/constants";
+
 import styles from "./login.module.css";
 
 export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -16,24 +23,14 @@ export default function LoginPage() {
     event.preventDefault();
     setBusy(true);
     setError("");
-    try {
-      const response = await fetch("/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
-      });
-      if (response.ok) {
-        router.replace("/overview");
-        router.refresh();
-        return;
-      }
-      const body = (await response.json().catch(() => ({}))) as { error?: string };
-      setError(body.error ?? "Sign-in failed. Please try again.");
-    } catch {
-      setError("The service is not reachable. Please try again.");
-    } finally {
-      setBusy(false);
+    const result = await apiPost(ENDPOINTS.auth.login, { email, password });
+    setBusy(false);
+    if (result.ok) {
+      router.replace(ROUTES.overview);
+      router.refresh();
+      return;
     }
+    setError(result.error);
   }
 
   return (
@@ -46,38 +43,55 @@ export default function LoginPage() {
             <p className={styles.kicker}>Your private wealth ledger</p>
           </div>
         </div>
-        <h1 id="login-heading" className={styles.heading}>Sign in</h1>
+
+        <h1 id="login-heading" className={styles.heading}>Welcome back</h1>
+        <p className={styles.sub}>Sign in to open your accounts, balances and interest.</p>
+
         <form onSubmit={submit} noValidate>
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor="email">Email</label>
-            <input
-              id="email"
-              className={styles.input}
-              type="email"
-              inputMode="email"
-              autoComplete="username"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className={styles.field}>
-            <label className={styles.label} htmlFor="password">Password</label>
-            <input
-              id="password"
-              className={styles.input}
-              type="password"
-              autoComplete="current-password"
-              required
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          {error ? <p className={styles.error} role="alert">{error}</p> : null}
+          <Field
+            id="email"
+            label="Email"
+            type="email"
+            inputMode="email"
+            autoComplete="username"
+            icon={<MailIcon />}
+            value={email}
+            onChange={setEmail}
+            autoFocus
+          />
+          <Field
+            id="password"
+            label="Password"
+            type={showPassword ? "text" : "password"}
+            autoComplete="current-password"
+            icon={<LockIcon />}
+            value={password}
+            onChange={setPassword}
+            trailing={
+              <button
+                className={styles.reveal}
+                type="button"
+                onClick={() => setShowPassword((shown) => !shown)}
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                aria-pressed={showPassword}
+              >
+                {showPassword ? <EyeOffIcon /> : <EyeIcon />}
+              </button>
+            }
+          />
+          {error ? (
+            <p className={styles.error} role="alert">
+              <AlertIcon />
+              <span>{error}</span>
+            </p>
+          ) : null}
           <button className={styles.button} type="submit" disabled={busy}>
+            {busy ? <span className={styles.spinner} aria-hidden="true" /> : null}
             {busy ? "Signing in…" : "Sign in"}
           </button>
         </form>
+
+        <HealthCheck />
       </section>
     </main>
   );

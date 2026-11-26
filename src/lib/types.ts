@@ -18,3 +18,13 @@ export interface LoginResponse {
   expiresIn: number;
   user: User;
 }
+
+// Result of our /api/health route: the BFF health API (bff, bss, db, redis) as seen from the server.
+export interface HealthReport {
+  configured: boolean;
+  reachable: boolean;
+  status: string | null;
+  bss: string | null;
+  db: string | null;
+  redis: string | null;
+}

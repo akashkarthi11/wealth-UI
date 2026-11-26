@@ -3,6 +3,9 @@
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
+import { apiPost } from "@/lib/api";
+import { ENDPOINTS, ROUTES } from "@/lib/constants";
+
 import styles from "./overview.module.css";
 
 export default function SignOutButton() {
@@ -11,12 +14,9 @@ export default function SignOutButton() {
 
   async function signOut() {
     setBusy(true);
-    try {
-      await fetch("/api/auth/logout", { method: "POST" });
-    } finally {
-      router.replace("/login");
-      router.refresh();
-    }
+    await apiPost(ENDPOINTS.auth.logout);
+    router.replace(ROUTES.login);
+    router.refresh();
   }
 
   return (

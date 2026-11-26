@@ -1,19 +1,23 @@
+import { BFF_API_PREFIX, BFF_TIMEOUT_MS } from "./constants";
 import type { ApiResponse } from "./types";
 
+// The one place the BFF address is read.
 const BASE = (process.env.WEALTH_BFF_URL ?? "").replace(/\/+$/, "");
-const API = "/wealth/api/v1/";
 
-export interface BffResult<T> {
+export interface BffResult<B> {
   httpStatus: number;
-  body: ApiResponse<T> | null;
+  body: B | null;
 }
 
-// Server-side only: the browser never sees the BFF address.
-export async function bffPost<T>(
-  path: string,
-  payload: unknown,
-  options: { token?: string; ip?: string } = {},
-): Promise<BffResult<T>> {
+interface BffOptions {
+  token?: string;
+  ip?: string;
+  timeoutMs?: number;
+  // true: path is used as given, without the API prefix (for example the actuator).
+  raw?: boolean;
+}
+
+async function call<B>(method: "GET" | "POST", path: string, payload: unknown, options: BffOptions): Promise<BffResult<B>> {
   if (!BASE) {
     return { httpStatus: 503, body: null };
   }
@@ -21,17 +25,17 @@ export async function bffPost<T>(
   if (options.token) headers.Authorization = `Bearer ${options.token}`;
   if (options.ip) headers["X-Forwarded-For"] = options.ip;
   try {
-    const response = await fetch(`${BASE}${API}${path}`, {
-      method: "POST",
+    const response = await fetch(`${BASE}${options.raw ? "" : BFF_API_PREFIX}${path}`, {
+      method,
       headers,
       body: payload === undefined ? undefined : JSON.stringify(payload),
       cache: "no-store",
-      signal: AbortSignal.timeout(20000),
+      signal: AbortSignal.timeout(options.timeoutMs ?? BFF_TIMEOUT_MS),
     });
     const text = await response.text();
-    let body: ApiResponse<T> | null = null;
+    let body: B | null = null;
     try {
-      body = text ? (JSON.parse(text) as ApiResponse<T>) : null;
+      body = text ? (JSON.parse(text) as B) : null;
     } catch {
       body = null;
     }
@@ -40,3 +44,8 @@ export async function bffPost<T>(
     return { httpStatus: 502, body: null };
   }
 }
+
+// Server-side only: the browser never sees the BFF address.
+export const bffPost = <T>(path: string, payload: unknown, options: BffOptions = {}) =>
+  call<ApiResponse<T>>("POST", path, payload, options);
+export const bffGet = <T>(path: string, options: BffOptions = {}) => call<T>("GET", path, undefined, options);

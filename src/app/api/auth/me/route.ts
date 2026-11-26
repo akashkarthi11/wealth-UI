@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { bffPost } from "@/lib/bff";
+import { BFF_PATHS } from "@/lib/constants";
 import { clearToken, clientIp, getToken } from "@/lib/session";
 import type { User } from "@/lib/types";
 
@@ -9,7 +10,7 @@ export async function GET(request: Request) {
   if (!token) {
     return NextResponse.json({ user: null }, { status: 401 });
   }
-  const result = await bffPost<User>("customers/users/me", undefined, { token, ip: clientIp(request) });
+  const result = await bffPost<User>(BFF_PATHS.me, undefined, { token, ip: clientIp(request) });
   if (result.httpStatus === 401 || result.httpStatus === 403) {
     await clearToken();
     return NextResponse.json({ user: null }, { status: 401 });

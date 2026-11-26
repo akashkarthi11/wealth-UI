@@ -3,28 +3,33 @@
   display: grid;
   place-items: center;
   padding: 24px 16px;
-  background: var(--bg);
+  background:
+    radial-gradient(900px 420px at 12% -10%, rgba(108, 224, 176, 0.13), transparent 60%),
+    radial-gradient(800px 420px at 100% 105%, rgba(131, 170, 255, 0.14), transparent 60%),
+    var(--bg);
 }
 
 .card {
   width: 100%;
-  max-width: 420px;
-  padding: 28px 22px;
-  border: 1px solid var(--line);
-  border-radius: 17px;
+  max-width: 440px;
+  padding: 30px 24px 24px;
   background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
 }
 
 .brand {
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-bottom: 22px;
+  margin-bottom: 26px;
 }
 
 .mark {
   width: 44px;
   height: 44px;
+  flex: none;
   border-radius: 13px;
   display: grid;
   place-items: center;
@@ -37,6 +42,7 @@
 .title {
   margin: 0;
   font-size: 18px;
+  font-weight: 600;
   color: var(--text);
 }
 
@@ -49,62 +55,134 @@
 }
 
 .heading {
-  margin: 0 0 18px;
+  margin: 0;
   font-size: 28px;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
   color: var(--text);
 }
 
-.field {
-  display: block;
-  margin-bottom: 14px;
-}
-
-.label {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 13px;
+.sub {
+  margin: 8px 0 24px;
+  font-size: 14.5px;
+  line-height: 1.5;
   color: var(--muted);
 }
 
-.input {
-  width: 100%;
-  min-height: var(--tap);
-  padding: 0 14px;
-  font-size: 16px; /* 16px stops iOS zooming into the field */
-  color: var(--text);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 12px;
+.reveal {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  color: var(--muted);
+  background: transparent;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
 }
 
-.input:focus-visible,
+.reveal:hover {
+  color: var(--text);
+}
+
+.reveal:focus-visible,
 .button:focus-visible {
   outline: 2px solid var(--green);
   outline-offset: 2px;
 }
 
 .error {
-  margin: 0 0 14px;
-  padding: 10px 12px;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 11px 12px;
   font-size: 14px;
+  line-height: 1.4;
   color: var(--danger);
-  border: 1px solid var(--danger);
-  border-radius: 10px;
+  background: rgba(255, 143, 154, 0.08);
+  border: 1px solid rgba(255, 143, 154, 0.5);
+  border-radius: 12px;
+  animation: nudge 0.3s ease both;
+}
+
+.error svg {
+  flex: none;
+  margin-top: 1px;
 }
 
 .button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
   width: 100%;
   min-height: var(--tap);
   font-size: 16px;
   font-weight: 600;
   color: #0b1220;
-  background: var(--green);
+  background: linear-gradient(135deg, var(--green), #8be8c2);
   border: 0;
   border-radius: 12px;
   cursor: pointer;
+  transition: filter 0.15s ease, transform 0.1s ease;
+}
+
+.button:hover:not(:disabled) {
+  filter: brightness(1.06);
+}
+
+.button:active:not(:disabled) {
+  transform: translateY(1px);
 }
 
 .button:disabled {
-  opacity: 0.6;
+  opacity: 0.8;
   cursor: progress;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(11, 18, 32, 0.25);
+  border-top-color: #0b1220;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes nudge {
+  0% {
+    transform: translateX(-4px);
+    opacity: 0;
+  }
+  40% {
+    transform: translateX(3px);
+  }
+  100% {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+/* Phone landscape: short screens keep the card top-aligned so nothing is cut off. */
+@media (max-height: 560px) {
+  .wrap {
+    place-items: start center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .error,
+  .spinner {
+    animation: none;
+  }
+  .button {
+    transition: none;
+  }
 }
