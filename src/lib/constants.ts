@@ -11,28 +11,43 @@ export const ENDPOINTS = {
     rolesList: `${BFF_PROXY}/admin/roles/list`,
     updateMenus: `${BFF_PROXY}/admin/roles/update-menus`,
     recordsList: `${BFF_PROXY}/admin/records/list`,
+    createRole: `${BFF_PROXY}/admin/roles/create`,
+    providersList: `${BFF_PROXY}/admin/connections/list`,
+    providersSave: `${BFF_PROXY}/admin/connections/save`,
+    providersTest: `${BFF_PROXY}/admin/connections/test`,
+    providersRemove: `${BFF_PROXY}/admin/connections/remove`,
+    providersFetch: `${BFF_PROXY}/admin/connections/fetch`,
+    usersList: `${BFF_PROXY}/admin/users/list`,
+    setUserRole: `${BFF_PROXY}/admin/users/set-role`,
+  },
+  connections: {
+    bff: { get: `/connections/bff/get`, update: `/connections/bff/update`, reset: `/connections/bff/reset` },
+    bss: { get: `${BFF_PROXY}/admin/connections/bss/get`, update: `${BFF_PROXY}/admin/connections/bss/update`, reset: `${BFF_PROXY}/admin/connections/bss/reset` },
+  },
+  environment: {
+    redis: { get: `${BFF_PROXY}/admin/environment/redis/get`, update: `${BFF_PROXY}/admin/environment/redis/update`, reset: `${BFF_PROXY}/admin/environment/redis/reset` },
+    postgres: { get: `${BFF_PROXY}/admin/environment/postgres/get`, update: `${BFF_PROXY}/admin/environment/postgres/update`, reset: `${BFF_PROXY}/admin/environment/postgres/reset` },
+    kafka: { get: `${BFF_PROXY}/admin/environment/kafka/get`, update: `${BFF_PROXY}/admin/environment/kafka/update`, reset: `${BFF_PROXY}/admin/environment/kafka/reset` },
   },
   users: { passwordReset: `${BFF_PROXY}/customers/users/password/reset` },
+  accounts: {
+    list: `${BFF_PROXY}/accounts/list`,
+    detail: `${BFF_PROXY}/accounts/detail`,
+    subtypes: `${BFF_PROXY}/accounts/subtypes`,
+    splitsList: `${BFF_PROXY}/accounts/splits/list`,
+  },
 } as const;
 
 // Page routes.
-export const ROUTES = { login: "/login", overview: "/overview", settings: "/settings", records: "/records" } as const;
+export const ROUTES = { login: "/login", overview: "/overview", banks: "/banks", settings: "/settings", records: "/records" } as const;
+
+// One account's page: /banks/<id>.
+export const bankRoute = (accountId: string) => `${ROUTES.banks}/${accountId}`;
+
+// The menu keys the pages built so far check (the keys are rows of the table wealth_menus; what the menu shows, its order and route come from there).
+export const MENU = { overview: "overview", banks: "banks" } as const;
 
 export const ROLE = { admin: "admin", user: "user" } as const;
-
-// The navigation. `menu` is the role-menu key (the user's menus decide whether it shows); adminOnly items show for admins only.
-// A module adds its item here when its screen exists.
-export interface NavItem {
-  label: string;
-  route: string;
-  menu?: string;
-  adminOnly?: boolean;
-}
-export const NAV: readonly NavItem[] = [
-  { label: "Overview", route: ROUTES.overview, menu: "overview" },
-  { label: "Records", route: ROUTES.records, adminOnly: true },
-  { label: "Settings", route: ROUTES.settings, adminOnly: true },
-];
 
 // Server side only: paths under the BFF base (the address itself is WEALTH_BFF_URL, read once in bff.ts).
 export const BFF_API_PREFIX = "/wealth/api/v1/";
@@ -42,10 +57,14 @@ export const BFF_PATHS = {
   me: "customers/users/me",
   logout: "customers/users/logout",
   health: "health",
+  menus: "menus/list",
+  addressSave: "admin/environment/address/save",
+  pick: "internal/settings/pick",
 } as const;
 export const BFF_ACTUATOR_HEALTH = "/actuator/health";
 export const BFF_TIMEOUT_MS = 20000;
 export const HEALTH_TIMEOUT_MS = 8000;
+export const CONNECTION_URL_MAX_LENGTH = 200;
 
 // Error codes the UI reacts to (BaseError in wealth-common).
 export const ERROR_CODE = { invalidRequest: "611", wrongCredentials: "602", tooManyAttempts: "6003" } as const;

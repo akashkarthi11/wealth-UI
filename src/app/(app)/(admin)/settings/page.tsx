@@ -1,14 +1,10 @@
-import PasswordResetPanel from "@/components/PasswordResetPanel";
-import RolesPanel from "@/components/RolesPanel";
-import Stack from "@/components/Stack";
+import { redirect } from "next/navigation";
 
-export const metadata = { title: "Settings · Karthi Portfolio" };
+import { ROUTES } from "@/lib/constants";
+import { getNav } from "@/lib/nav";
 
-export default function SettingsPage() {
-  return (
-    <Stack>
-      <RolesPanel />
-      <PasswordResetPanel />
-    </Stack>
-  );
+// Settings opens on its first submenu, as the table lists them.
+export default async function SettingsPage() {
+  const settings = (await getNav()).find((menu) => menu.route === ROUTES.settings);
+  redirect(settings?.children[0]?.route ?? ROUTES.overview);
 }

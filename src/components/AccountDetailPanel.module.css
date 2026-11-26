@@ -1,0 +1,160 @@
+.back {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  padding: 0 4px;
+  font-size: 14px;
+  color: var(--blue);
+  text-decoration: none;
+}
+
+.back:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.balance {
+  margin: 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.meta {
+  margin: 4px 0 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.terms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+  margin: 16px 0 0;
+}
+
+.terms div {
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.terms dt {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.terms dd {
+  margin: 3px 0 0;
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.split {
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.splitSummary {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  padding: 8px 14px;
+  list-style: none;
+  cursor: pointer;
+}
+
+.splitSummary::-webkit-details-marker {
+  display: none;
+}
+
+.splitSummary:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+.main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.name {
+  font-size: 14.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.amount {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.amount b {
+  font-size: 15px;
+  color: var(--text);
+}
+
+.bar {
+  height: 6px;
+  margin: 0 14px 10px;
+  overflow: hidden;
+  background: var(--line);
+  border-radius: 999px;
+}
+
+.bar span {
+  display: block;
+  height: 100%;
+  background: var(--green);
+}
+
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0 14px 12px;
+}
+
+.rows li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 0;
+  font-size: 13.5px;
+  color: var(--muted);
+  border-top: 1px solid var(--line);
+}
+
+.rows li:first-child {
+  border-top: 0;
+}
+
+.rows b {
+  color: var(--text);
+  white-space: nowrap;
+}
+
+.empty {
+  margin: 0;
+  padding: 0 14px 12px;
+  font-size: 13px;
+  color: var(--muted);
+}

@@ -32,12 +32,25 @@ export default function PasswordResetPanel() {
   }
 
   return (
-    <Panel title="Reset a password" hint={`Sets a new password for an account. It must be at least ${PASSWORD_MIN_LENGTH} characters.`}>
+    <Panel title="Reset a password" hint="Set a new password for an account. That account is signed out on every device.">
       <form onSubmit={submit} noValidate className={styles.form}>
-        <Field id="reset-email" label="Account email" type="email" inputMode="email" autoComplete="off" icon={<MailIcon />} value={email} onChange={setEmail} />
-        <Field id="reset-password" label="New password" type="password" autoComplete="new-password" icon={<LockIcon />} value={newPassword} onChange={setNewPassword} />
-        {message ? <p className={message.ok ? styles.ok : styles.error} role="status">{message.text}</p> : null}
-        <button className={styles.button} type="submit" disabled={busy}>{busy ? "Resetting…" : "Reset password"}</button>
+        <div className={styles.fields}>
+          <Field id="reset-email" label="Account email" type="email" inputMode="email" autoComplete="off" icon={<MailIcon />} value={email} onChange={setEmail} />
+          <Field
+            id="reset-password"
+            label="New password"
+            type="password"
+            autoComplete="new-password"
+            icon={<LockIcon />}
+            value={newPassword}
+            onChange={setNewPassword}
+            help={`At least ${PASSWORD_MIN_LENGTH} characters.`}
+          />
+        </div>
+        <div className={styles.footer}>
+          {message ? <p className={message.ok ? styles.ok : styles.error} role="status">{message.text}</p> : <span />}
+          <button className={styles.button} type="submit" disabled={busy}>{busy ? "Resetting…" : "Reset password"}</button>
+        </div>
       </form>
     </Panel>
   );

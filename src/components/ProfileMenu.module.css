@@ -1,0 +1,96 @@
+.root {
+  position: relative;
+  flex: none;
+}
+
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #0b1220;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  border: 2px solid transparent;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.avatar:hover {
+  border-color: rgba(238, 244, 255, 0.45);
+}
+
+.avatar:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 20;
+  width: min(300px, calc(100vw - 32px));
+  padding: 14px;
+  background: #16243b;
+  border: 1px solid #35496a;
+  border-radius: 14px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+}
+
+.who {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.big {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 46px;
+  height: 46px;
+  font-size: 20px;
+  font-weight: 700;
+  color: #0b1220;
+  background: linear-gradient(135deg, var(--green), var(--blue));
+  border-radius: 50%;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.text b {
+  font-size: 15px;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+
+.text small {
+  font-size: 12.5px;
+  color: var(--muted);
+  overflow-wrap: anywhere;
+}
+
+.role {
+  align-self: flex-start;
+  margin-top: 4px;
+  padding: 2px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--blue);
+  border: 1px solid rgba(131, 170, 255, 0.45);
+  border-radius: 999px;
+}
+
+.menu > button {
+  width: 100%;
+}

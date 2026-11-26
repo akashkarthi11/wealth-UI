@@ -1,0 +1,99 @@
+.count {
+  display: inline-block;
+  padding: 3px 10px;
+  font-size: 12px;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow: hidden;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  min-height: 64px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--line);
+}
+
+.row:first-child {
+  border-top: 0;
+}
+
+.who {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.who b {
+  font-size: 14.5px;
+  color: var(--text);
+}
+
+.who small {
+  font-size: 12px;
+  color: var(--blue);
+}
+
+.pick {
+  flex: none;
+}
+
+.select {
+  min-height: var(--tap);
+  min-width: 160px;
+  padding: 0 12px;
+  font-size: 15px;
+  color: var(--text);
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+}
+
+.select:disabled {
+  opacity: 0.6;
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+}
+
+.ok,
+.error {
+  margin: 12px 2px 0;
+  font-size: 13.5px;
+  line-height: 1.4;
+}
+
+.ok {
+  color: var(--green);
+}
+
+.error {
+  color: var(--danger);
+}

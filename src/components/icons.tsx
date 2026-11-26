@@ -50,3 +50,17 @@ export const PulseIcon = () => (
     <path d="M3 12h4l2.5-6 4 12 2.5-6H21" />
   </Svg>
 );
+
+export const UserIcon = () => (
+  <Svg>
+    <circle cx="12" cy="8" r="4" />
+    <path d="M4 20a8 8 0 0 1 16 0" />
+  </Svg>
+);
+
+export const LinkIcon = () => (
+  <Svg>
+    <path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1" />
+    <path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1" />
+  </Svg>
+);

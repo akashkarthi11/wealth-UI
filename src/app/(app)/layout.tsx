@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import AppShell from "@/components/AppShell";
 import { getCurrentUser } from "@/lib/currentUser";
+import { getNav } from "@/lib/nav";
 import { ROUTES } from "@/lib/constants";
 
 export const dynamic = "force-dynamic";
@@ -13,5 +14,5 @@ export default async function AppLayout({ children }: { children: ReactNode }) {
   if (!user) {
     redirect(ROUTES.login);
   }
-  return <AppShell user={user}>{children}</AppShell>;
+  return <AppShell user={user} nav={await getNav()}>{children}</AppShell>;
 }

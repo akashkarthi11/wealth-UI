@@ -1,0 +1,120 @@
+.grid {
+  display: flex;
+  gap: 12px;
+  align-items: flex-end;
+  margin-bottom: 12px;
+}
+
+.grid > div:first-child {
+  flex: 1;
+  min-width: 0;
+}
+
+.priority {
+  flex: none;
+  width: 96px;
+}
+
+.keyRow {
+  margin-top: 12px;
+}
+
+.login {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 12px;
+  margin: 12px 0;
+}
+
+.switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: var(--tap);
+  margin-top: 2px;
+  font-size: 14.5px;
+  color: var(--text);
+  cursor: pointer;
+}
+
+.switch input {
+  width: 20px;
+  height: 20px;
+  accent-color: #6ce0b0;
+}
+
+.checked {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+}
+
+.fetchRow {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 0 14px 10px;
+}
+
+.danger {
+  min-height: 44px;
+  padding: 0 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--danger);
+  background: transparent;
+  border: 1px solid rgba(255, 143, 154, 0.55);
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.danger:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.danger:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+
+.add {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 14px;
+  padding: 14px;
+  background: var(--bg);
+  border: 1px dashed #35496a;
+  border-radius: 12px;
+}
+
+.add > div {
+  flex: 1;
+  min-width: 170px;
+}
+
+.addHint,
+.addError {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: 12.5px;
+  line-height: 1.4;
+}
+
+.addHint {
+  color: var(--muted);
+}
+
+.addError {
+  color: var(--danger);
+}
+
+.empty {
+  padding: 18px 14px;
+  font-size: 14px;
+  text-align: center;
+  color: var(--muted);
+}

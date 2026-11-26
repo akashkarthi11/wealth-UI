@@ -5,7 +5,7 @@ import { FormEvent, useState } from "react";
 
 import Field from "@/components/Field";
 import HealthCheck from "@/components/HealthCheck";
-import { AlertIcon, EyeIcon, EyeOffIcon, LockIcon, MailIcon } from "@/components/icons";
+import { AlertIcon, LockIcon, MailIcon } from "@/components/icons";
 import { apiPost } from "@/lib/api";
 import { ENDPOINTS, ROUTES } from "@/lib/constants";
 
@@ -15,7 +15,6 @@ export default function LoginPage() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
@@ -62,22 +61,11 @@ export default function LoginPage() {
           <Field
             id="password"
             label="Password"
-            type={showPassword ? "text" : "password"}
+            type="password"
             autoComplete="current-password"
             icon={<LockIcon />}
             value={password}
             onChange={setPassword}
-            trailing={
-              <button
-                className={styles.reveal}
-                type="button"
-                onClick={() => setShowPassword((shown) => !shown)}
-                aria-label={showPassword ? "Hide password" : "Show password"}
-                aria-pressed={showPassword}
-              >
-                {showPassword ? <EyeOffIcon /> : <EyeIcon />}
-              </button>
-            }
           />
           {error ? (
             <p className={styles.error} role="alert">
