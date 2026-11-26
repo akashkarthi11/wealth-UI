@@ -22,18 +22,20 @@ export default function Home() {
   const [redisStatus, setRedisStatus] = useState<ComponentStatus>("checking");
   const [redisDetail, setRedisDetail] = useState<string>("");
 
-  const bffUrl = process.env.NEXT_PUBLIC_WEALTH_BFF_URL;
+  const [bffUrl, setBffUrl] = useState<string>("");
+  const [bffState, setBffState] = useState<string>("");
   const bssUrl = process.env.NEXT_PUBLIC_WEALTH_BSS_URL;
 
   useEffect(() => {
-    if (!bffUrl) {
-      setBffStatus("not-configured");
-      return;
-    }
-    fetch(`${bffUrl}/actuator/health`)
-      .then((r) => setBffStatus(r.ok ? "ok" : "unreachable"))
+    fetch("/api/health", { cache: "no-store" })
+      .then((r) => r.json())
+      .then((body: { configured: boolean; reachable: boolean; status: string | null; url: string | null }) => {
+        setBffUrl(body.url ?? "");
+        setBffState(body.status ?? "");
+        setBffStatus(!body.configured ? "not-configured" : body.reachable ? "ok" : "unreachable");
+      })
       .catch(() => setBffStatus("unreachable"));
-  }, [bffUrl]);
+  }, []);
 
   useEffect(() => {
     if (!bssUrl) {
@@ -68,8 +70,8 @@ export default function Home() {
         <p className="status">
           <Dot status={bffStatus} />
           {bffStatus === "checking" && "Checking..."}
-          {bffStatus === "not-configured" && "NEXT_PUBLIC_WEALTH_BFF_URL is not set"}
-          {bffStatus === "ok" && `Reachable at ${bffUrl}`}
+          {bffStatus === "not-configured" && "WEALTH_BFF_URL is not set"}
+          {bffStatus === "ok" && `Reachable at ${bffUrl}${bffState ? " — " + bffState : ""}`}
           {bffStatus === "unreachable" && `Could not reach ${bffUrl}`}
         </p>
       </div>
