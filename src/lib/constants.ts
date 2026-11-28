@@ -30,6 +30,14 @@ export const ENDPOINTS = {
     kafka: { get: `${BFF_PROXY}/admin/environment/kafka/get`, update: `${BFF_PROXY}/admin/environment/kafka/update`, reset: `${BFF_PROXY}/admin/environment/kafka/reset` },
   },
   users: { passwordReset: `${BFF_PROXY}/customers/users/password/reset` },
+  finvu: {
+    config: `${BFF_PROXY}/aa/finvu/config`,
+    consentRequest: `${BFF_PROXY}/aa/finvu/consent/request`,
+    consentStatus: `${BFF_PROXY}/aa/finvu/consent/status`,
+    fiRequest: `${BFF_PROXY}/aa/finvu/fi/request`,
+    fiStatus: `${BFF_PROXY}/aa/finvu/fi/status`,
+    fiFetch: `${BFF_PROXY}/aa/finvu/fi/fetch`,
+  },
   accounts: {
     list: `${BFF_PROXY}/accounts/list`,
     detail: `${BFF_PROXY}/accounts/detail`,
