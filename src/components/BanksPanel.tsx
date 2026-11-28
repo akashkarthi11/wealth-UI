@@ -13,6 +13,7 @@ import Panel from "./Panel";
 import Stack from "./Stack";
 import StateMessage from "./StateMessage";
 import TotalsHero from "./TotalsHero";
+import FinvuConnectPanel from "./FinvuConnectPanel";
 
 const CATEGORY_LABELS: Record<string, string> = { CASA: "Cash and deposits", INVESTMENT: "Investment", LIABILITY: "Amount owed" };
 
@@ -46,6 +47,7 @@ export default function BanksPanel() {
   const { totals, banks } = data;
   return (
     <Stack>
+      <FinvuConnectPanel />
       <TotalsHero totals={totals} />
       {banks.length === 0 ? <StateMessage kind="empty" text="No accounts yet." /> : null}
       {banks.map((bank) => (
