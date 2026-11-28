@@ -28,8 +28,11 @@ export default function FinvuConnectPanel() {
   const [handle, setHandle] = useState("");
   const [consentId, setConsentId] = useState("");
   const [sessionId, setSessionId] = useState("");
-  const [from, setFrom] = useState("");
-  const [to, setTo] = useState("");
+  const defaultTo = new Date();
+  const defaultFrom = new Date();
+  defaultFrom.setMonth(defaultFrom.getMonth() - 6);
+  const [from, setFrom] = useState(defaultFrom.toISOString());
+  const [to, setTo] = useState(defaultTo.toISOString());
   const [busy, setBusy] = useState("");
   const [last, setLast] = useState<unknown>(null);
   const [error, setError] = useState("");
