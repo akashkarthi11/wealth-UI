@@ -64,7 +64,8 @@ export default function FinvuConnectPanel() {
     }
   };
   const requestFi = async () => {
-    await run("fi-request", ENDPOINTS.finvu.fiRequest, { custId: custId.trim(), consentHandleId: handle.trim(), consentId: consentId.trim(), dateTimeRangeFrom: from, dateTimeRangeTo: to });
+    const result = await run("fi-request", ENDPOINTS.finvu.fiRequest, { custId: custId.trim(), consentHandleId: handle.trim(), consentId: consentId.trim(), dateTimeRangeFrom: from, dateTimeRangeTo: to });
+    if (result.ok) { const id = field(result.data, "sessionId"); if (typeof id === "string") setSessionId(id); }
   };
   const checkFi = async () => {
     const result = await run("fi-status", ENDPOINTS.finvu.fiStatus, { custId: custId.trim(), consentHandleId: handle.trim(), consentId: consentId.trim(), sessionId: sessionId.trim() });
