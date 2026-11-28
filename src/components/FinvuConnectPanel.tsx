@@ -94,6 +94,7 @@ export default function FinvuConnectPanel() {
         <label>Consent description<input value={description} onChange={e => setDescription(e.target.value)} maxLength={160} /></label>
         <button disabled={!configured || !custId.trim() || !!busy} onClick={requestConsent}>{busy === "consent" ? "Requesting…" : "1 · Request consent"}</button>
       </div>
+      <p className={styles.intro}><a href="https://aaweb.finvu.in/home" target="_blank" rel="noreferrer">Open Finvu AA web app to approve the consent ↗</a></p>
       <div className={styles.form}>
         <label>Consent handle<input value={handle} onChange={e => setHandle(e.target.value)} placeholder="Returned consentHandle" /></label>
         <button disabled={!configured || !custId.trim() || !handle.trim() || !!busy} onClick={checkConsent}>{busy === "consent-status" ? "Checking…" : "2 · Check consent status"}</button>
